@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oussama Jhimi - Portfolio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4ade80;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6c757d 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: white !important;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary) !important;
+            font-size: 1.8rem;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            background: white;
+            color: var(--dark);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-weight: 700;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .hero .welcome-text {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .hero .build-text {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            border: none;
+            padding: 15px 35px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3a0ca3 0%, #38b6ff 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        
+        .section-title h2 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: var(--secondary);
+            display: inline-block;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .skills .section-title h2 {
+            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .about {
+            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            backdrop-filter: blur(10px);
+        }
+        
+        .about-content {
+            padding: 30px;
+        }
+        
+        .about h3 {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .skills {
+            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .skill-item {
+            text-align: center;
+            padding: 40px 30px;
+            background: linear-gradient(145deg, #ffffff 0%, #fafbff 100%);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 30px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(67, 97, 238, 0.1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .skill-item:nth-child(1) { animation-delay: 0.1s; }
+        .skill-item:nth-child(2) { animation-delay: 0.2s; }
+        .skill-item:nth-child(3) { animation-delay: 0.3s; }
+        .skill-item:nth-child(4) { animation-delay: 0.4s; }
+        .skill-item:nth-child(5) { animation-delay: 0.5s; }
+        .skill-item:nth-child(6) { animation-delay: 0.6s; }
+
+        .skill-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4361ee 0%, #4cc9f0 50%, #7209b7 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .skill-item:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
+            border-color: rgba(67, 97, 238, 0.2);
+        }
+
+        .skill-item:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .skill-icon {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .skill-item:hover .skill-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .skill-item h4 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .skill-item p {
+            color: #64748b;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        
+        .projects {
+            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            backdrop-filter: blur(10px);
+        }
+        
+        .project-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 30px;
+            background: linear-gradient(145deg, #ffffff 0%, #fafbff 100%);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(67, 97, 238, 0.1);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+        .project-card:nth-child(4) { animation-delay: 0.4s; }
+        .project-card:nth-child(5) { animation-delay: 0.5s; }
+        .project-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4361ee 0%, #4cc9f0 50%, #7209b7 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
+            border-color: rgba(67, 97, 238, 0.2);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+        
+        .project-img {
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+        }
+
+        .project-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(67, 97, 238, 0.1) 0%, rgba(76, 201, 240, 0.1) 100%);
+            z-index: 1;
+        }
+
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-card:hover .project-img img {
+            transform: scale(1.08);
+        }
+        
+        .project-content {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            position: relative;
+            height: 100%;
+        }
+
+        .project-content h4 {
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--secondary);
+            font-size: 1.25rem;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        .project-content p {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            text-align: justify;
+            flex-grow: 1;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 0 20px 0;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .project-content .btn {
+            margin-top: auto;
+            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .project-content .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .project-content .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+            color: white;
+        }
+
+        .project-content .btn:hover::before {
+            left: 100%;
+        }
+
+        .project-content .btn:active {
+            transform: translateY(0);
+        }
+        
+        .project-tag {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .project-card:hover .project-tag::before {
+            left: 100%;
+        }
+
+        .project-card:hover .project-tag {
+            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+        
+        .contact {
+            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            backdrop-filter: blur(10px);
+            color: var(--dark);
+        }
+        
+        .contact h2 {
+            color: var(--secondary) !important;
+        }
+        
+        .contact-form {
+            background: linear-gradient(145deg, #ffffff 0%, #f0f4ff 100%);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.15);
+            border: 2px solid rgba(67, 97, 238, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4361ee 0%, #4cc9f0 50%, #7209b7 100%);
+        }
+        
+        .form-control {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+            border: 2px solid rgba(67, 97, 238, 0.15);
+            color: var(--dark);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+        
+        .form-control::placeholder {
+            color: #64748b;
+            font-weight: 400;
+        }
+        
+        .form-control:focus {
+            background: #ffffff;
+            color: var(--dark);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.3rem rgba(67, 97, 238, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+        }
+        
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .social-link i {
+            font-size: 1.5rem;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Portfolio </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills">Skills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1>Hi, I'm Oussama Jhimi</h1>
+                    <p class="welcome-text">Embedded Systems Engineer</p>
+                    <p class="build-text">Let's build something together.</p>
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="image/1730200699817.png" alt="Profile" class="img-fluid" style="max-width: 350px; border-radius: 0;">
+                    <div class="quote-container" style="margin-top: 30px;">
+                        <p style="font-style: italic; font-size: 1.4rem; font-weight: 600; color: var(--secondary); margin: 0; line-height: 1.5; text-align: center;">
+                            If your dreams don't scare you, they are not big enough
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center section-title">
+                    <h2>About Me</h2>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <!-- Changed image to one representing embedded systems -->
+                    <img src="image/About Me.png" alt="Embedded Systems" class="img-fluid rounded"  rgba(0,0,0,0.1);">
+                </div>
+                <div class="col-lg-6 about-content">
+                    <h3>Embedded Systems Engineer</h3>
+                    <p>Hello! I'm Oussama, an Embedded Systems Engineer with expertise in microcontroller programming, circuit design, and real-time systems. I specialize in developing efficient, reliable embedded solutions for various applications.</p>
+                    <p>My skills span across multiple platforms including STM32, ESP32, Arduino, and Raspberry Pi, with proficiency in C, C++, Python, Linux and Assembly languages.</p>
+                    <p>When I'm not working on embedded projects, I enjoy exploring new hardware technologies, contributing to open-source embedded projects, and learning about the latest developments in IoT and robotics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center section-title">
+                    <h2>My Skills</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h4>Microcontrollers</h4>
+                        <p>STM32, ESP32, ATmega , Raspberry Pi, ATMEL ARM</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h4>Programming</h4>
+                        <p>C, C++, Python, Assembly, Linux</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h4>Tools & Protocols</h4>
+                        <p>Altium Designer, Proteus, STM32CubeIDE, CAN,MQTT,I2C, UART, Qt, Firebase</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fab fa-studiovinari"></i>
+                        </div>
+                        <h4>STM32</h4>
+                        <p>Skilled in STM32 microcontrollers and HAL libraries, enabling robust firmware development, seamless peripheral integration, and optimized hardware-software interaction.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <h4>IoT</h4>
+                        <p>Building IoT applications with integrated wireless technologies to connect sensors, microcontrollers, and cloud platforms for intelligent automation.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h4>Real-time Systems</h4>
+                        <p>Designing and implementing real-time embedded applications</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center section-title">
+                    <h2>My Projects</h2>
+                </div>
+            </div>
+            <div id="projects-grid" class="row">
+                <!-- GitHub repositories will be injected here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center section-title">
+                    <h2>Get In Touch</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-form">
+                        <!-- Modified form to send email -->
+                        <form action="https://formspree.io/f/mwpngpog" method="POST">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <textarea name="message" class="form-control" placeholder="Your Message" required></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3>Oussama Jhimi</h3>
+                    <p>Embedded Systems Engineer</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Oussama-Jhimi" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/oussama-jhimi" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center copyright">
+                    <p>&copy; 2023 Oussama Jhimi. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            const username = 'Oussama-Jhimi';
+            const grid = document.getElementById('projects-grid');
+
+            // Function to find repository override (exact match or partial match)
+            function findRepositoryOverride(repoName) {
+                // First try exact match
+                if (manualOverrides[repoName]) {
+                    return manualOverrides[repoName];
+                }
+                
+                // Try partial matches for common variations
+                const partialMatches = {
+                    'IoT-CO2-Monitoring-Relay-Control-System': ['IoT-CO2', 'CO2-Monitoring', 'Relay-Control'],
+                    'nRF24L01-Wireless-Controller': ['nRF24L01', 'Wireless-Controller', 'nRF24']
+                };
+                
+                for (const [key, variations] of Object.entries(partialMatches)) {
+                    if (variations.some(variation => repoName.includes(variation))) {
+                        console.log(`Found partial match for ${repoName} -> ${key}`);
+                        return manualOverrides[key];
+                    }
+                }
+                
+                return null;
+            }
+
+            // Manual overrides for specific repositories
+            const manualOverrides = {
+                'IoT-CO2-Monitoring-Relay-Control-System': {
+                    name: 'Embedded System Development for IoT Control',
+                    image: 'image/IoT.png',
+                    description: 'Custom PCB design featuring an ESP32 microcontroller, MH-Z19 CO₂ sensor, and six relay modules, engineered using Altium Designer for reliable environmental monitoring and control systems.\n\nCross-platform application developed in Python/PyQt5, offering real-time CO₂ graphing and remote relay control via the MQTT protocol.',
+                    skills: ['ESP32', 'Altium Designer', 'CO₂ Sensor', 'Relay Control', 'IoT','PyQt5','MQTT']
+                },
+                'MHZ19Universal': {
+                    name: 'MH-Z19 Universal Library',
+                    image: 'https://www.shutterstock.com/image-illustration/c-code-on-dark-background-600nw-1896170293.jpg',
+                    description: 'Embedded C++ library for MH-Z19 CO₂ sensors (B/C/D series).Provides reliable CO₂ concentration and temperature measurements with automatic sensor variant detection. Features include calibration routines (zero/span), automatic baseline correction (ABC) management, configurable measurement range, and optional data filtering for improved stability. Designed for easy integration into embedded projects, offering a lightweight and modular API for precise indoor air quality monitoring.',
+                    skills: ['C++','c', 'Arduino', 'CO₂ Sensor', 'Library Development', 'Calibration']
+                },
+                'nRF24L01-Wireless-Controller': {
+                    name: 'NRF24L01 Wireless Controller',
+                    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtLhRhjnhU4wQELPAw0cDl9cZLpE0Dvr7iTQ&s',
+                    description: 'A compact, low-power embedded system designed in Altium Designer.It interfaces with a PS/2 game controller to capture real-time input signals and transmits the data wirelessly over the 2.4 GHz ISM band using the nRF24L01+ transceiver module. The design emphasizes battery efficiency, reliable wireless communication, and clean PCB layout for seamless integration into portable gaming or remote-control applications.',
+                    skills: ['nRF24L01', 'Altium Designer', 'c++','Wireless Communication', 'PCB Design']
+                },
+                'checksum-with-MD5': {
+                    name: 'MD5 Checksum Utility',
+                    image: 'https://www.profesionalreview.com/wp-content/uploads/2021/09/MD5-checksum-00.jpg',
+                    description: 'Utility for calculating and verifying MD5 checksums of different memory regions within NAND flash memory. Designed for embedded systems validation.',
+                    skills: ['C','c++', 'MD5', 'NAND Flash', 'Memory Validation', 'Embedded Systems']
+                },
+                'line-following-robot-code': {
+                    name: 'Line Following Robot',
+                    image: 'image/Line Following Robot.png',    
+                    description: 'Line-following robot using sensor-based navigation. Arduino code for detecting and following black lines on white surfaces with obstacle-avoidance capabilities.',
+                    skills: ['Arduino', 'Robotics', 'Sensor Navigation', 'C++', 'Motor Control']
+                },
+                'Smart-Home': {
+                    name: 'Smart Home IoT System',
+                    image: 'https://www.ecosystemimpianti.it/wp-content/uploads/2020/09/domotica-e-iot.jpg',
+                    description: 'Smart home prototype using IoT and Blynk platform. Remotely controls home devices, sends sensor-based notifications, detects presence via RFID, and grants access with servo-controlled door.',
+                    skills: ['IoT', 'Blynk', 'RFID', 'Servo Control', 'Mobile App']
+                },
+                'Temperature-measurement-with-I2C-network': {
+                    name: 'Smart Sensor Network for Real Time Climate Monitoring',
+                    image: 'image/Climate.png',
+                    description: 'Designed and implemented an I2C-based network using ESP32 and Arduino for temperature and humidity monitoring. Sensor data is collected and transmitted to an IoT platform, enabling real-time visualization, analysis, and control.',
+                    skills: ['I2C', 'ESP32', 'Arduino', 'Temperature Sensors', 'IoT Platform']
+                },
+                'temperature-reader': {
+                    name: 'Embedded Systems I2C Communication Project',
+                    image: 'https://discrete.co.in/_next/image?url=https%3A%2F%2Fdiscrete-aws-s3.s3.eu-north-1.amazonaws.com%2F038193f7-be59-42e7-9cc2-dd04ee1d23ec-iot-hardware-development-best-iot-hardware-design-services.webp&w=1200&q=75',
+                    description: 'Learning project featuring STM32 and Raspberry Pi as master devices. Demonstrates practical I2C communication with an AHT10 temperature sensor and an LCD display for real-time data visualization.',
+                    skills: ['I2C', 'STM32', 'Raspberry Pi', 'AHT10', 'IoT']
+                },
+                'voltage-measurement': {
+                    name: 'Precision Voltage Measurement',
+                    image: 'image/Voltage Measurement.png',
+                    description: 'Accurate voltage measurement solution using ESP32 and ADS1115 ADC. Ideal for measuring small voltages (1.2V, 1.8V, 3.3V, 5V) with high precision.',
+                    skills: ['ESP32', 'ADS1115', 'ADC', 'Voltage Measurement', 'Precision Electronics']
+                },
+                'Brightness-dimmer': {
+                    name: 'Smart Light Dimmer',
+                    image: 'image/dimmer.png',
+                    description: 'Dual Light Dimmer System with manual & automatic control via microcontroller. Adjusts brightness based on user needs or ambient conditions to reduce energy waste.',
+                    skills: ['Microcontroller', 'PWM', 'Light Control', 'Energy Efficiency', 'Ambient Sensing']
+                },
+                'ESP32': {
+                    name: 'Custom ESP32 Development Board',
+                    image: 'image/espp32.png',
+                    description: 'Compact ESP32 board designed with Altium Designer. Ideal for IoT, embedded systems, and space-constrained projects. Includes schematic, PCB layout, and all libraries.',
+                    skills: ['ESP32', 'Altium Designer', 'PCB Design', 'IoT', 'Embedded Systems']
+                }
+            };
+
+            function createCard(repo) {
+                const col = document.createElement('div');
+                col.className = 'col-lg-4 col-md-6';
+
+                const card = document.createElement('div');
+                card.className = 'project-card';
+
+                const imgWrap = document.createElement('div');
+                imgWrap.className = 'project-img';
+                const img = document.createElement('img');
+                // Use manual override image if available, otherwise fallback to language-based image
+                const override = findRepositoryOverride(repo.name);
+                
+                // Debug: log repository name and override status
+                console.log('Repository:', repo.name, 'Has override:', !!override);
+                img.src = override?.image || 'https://source.unsplash.com/featured/800x600?technology,' + encodeURIComponent(repo.language || 'electronics');
+                img.alt = repo.name;
+                imgWrap.appendChild(img);
+
+                const content = document.createElement('div');
+                content.className = 'project-content';
+
+                const title = document.createElement('h4');
+                // Use custom name if available, otherwise format the repo name
+                title.textContent = override?.name || repo.name.replace(/[-_]/g, ' ');
+
+                const desc = document.createElement('p');
+                // Use manual override description if available, otherwise use GitHub description
+                const descriptionText = override?.description || repo.description || 'No description provided.';
+                desc.innerHTML = descriptionText.replace(/\n/g, '<br>');
+
+                const tags = document.createElement('div');
+                tags.className = 'project-tags';
+                
+                // Use custom skills if available, otherwise use repo language
+                const skillsToShow = override?.skills || (repo.language ? [repo.language] : []);
+                skillsToShow.forEach(skill => {
+                    const tag = document.createElement('span');
+                    tag.className = 'project-tag';
+                    tag.textContent = skill;
+                    tags.appendChild(tag);
+                });
+
+                const btn = document.createElement('a');
+                btn.href = repo.html_url;
+                btn.target = '_blank';
+                btn.rel = 'noopener noreferrer';
+                btn.className = 'btn btn-outline-primary';
+                btn.innerHTML = '<i class="fas fa-external-link-alt"></i> View Project';
+
+                content.appendChild(title);
+                content.appendChild(desc);
+                content.appendChild(tags);
+                content.appendChild(btn);
+
+                card.appendChild(imgWrap);
+                card.appendChild(content);
+                col.appendChild(card);
+                return col;
+            }
+
+            async function loadRepos() {
+                try {
+                    const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`);
+                    if (!res.ok) throw new Error('Failed to load repositories');
+                    const repos = await res.json();
+
+                    // Debug: log all repository names
+                    console.log('All repositories:', repos.map(r => r.name));
+
+                    // Filter out forks and the profile repo named exactly "Oussama-Jhimi"
+                    const filtered = repos.filter(r => !r.fork && r.name !== 'Oussama-Jhimi');
+
+                    if (filtered.length === 0) {
+                        const empty = document.createElement('p');
+                        empty.textContent = 'No repositories found.';
+                        grid.appendChild(empty);
+                        return;
+                    }
+
+                    filtered.forEach(repo => {
+                        grid.appendChild(createCard(repo));
+                    });
+                } catch (e) {
+                    const error = document.createElement('p');
+                    error.textContent = 'Could not load projects right now.';
+                    grid.appendChild(error);
+                }
+            }
+
+            loadRepos();
+        })();
+    </script>
+</body>
+</html>
