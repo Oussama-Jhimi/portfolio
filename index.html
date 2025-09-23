@@ -997,7 +997,8 @@
                     console.log('All repositories:', repos.map(r => r.name));
 
                     // Filter out forks and the profile repo named exactly "Oussama-Jhimi"
-                    const filtered = repos.filter(r => !r.fork && r.name !== 'Oussama-Jhimi');
+                    // Also exclude a repo explicitly named 'portfolio' (case-insensitive)
+                    const filtered = repos.filter(r => !r.fork && r.name !== 'Oussama-Jhimi' && r.name.toLowerCase() !== 'portfolio');
 
                     if (filtered.length === 0) {
                         const empty = document.createElement('p');
