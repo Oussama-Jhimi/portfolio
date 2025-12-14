@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,8 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --primary: #4361ee;
@@ -18,44 +20,97 @@
             --light: #f8f9fa;
             --dark: #212529;
             --success: #4ade80;
+
+            /* Theme Variables */
+            --bg-body: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6c757d 100%);
+            --bg-navbar: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --bg-card: #ffffff;
+            --bg-card-gradient: linear-gradient(145deg, #ffffff 0%, #fafbff 100%);
+            --bg-tag: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
+            --bg-img-placeholder: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+            --text-color: #212529;
+            --text-secondary: #64748b;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --border-color: rgba(67, 97, 238, 0.1);
+            --bg-footer: #212529;
         }
-        
+
+        body.dark-mode {
+            --primary: #4cc9f0;
+            --secondary: #a5b4fc;
+
+            --bg-body: linear-gradient(135deg, #0f172a 0%, #312e81 100%);
+            --bg-navbar: #111827;
+            --bg-glass: rgba(17, 24, 39, 0.95);
+            --bg-card: #1f2937;
+            --bg-card-gradient: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+            --bg-tag: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            --bg-img-placeholder: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            --text-color: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --bg-footer: #0b1120;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            padding: 8px 0;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+            transform: rotate(15deg);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6c757d 100%);
-            color: var(--dark);
+            background: var(--bg-body);
+            color: var(--text-color);
             line-height: 1.6;
             min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
         }
-        
+
         .navbar {
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: white !important;
+            background-color: var(--bg-navbar) !important;
+            transition: background-color 0.3s ease;
         }
-        
+
         .navbar-brand {
             font-weight: 700;
             color: var(--primary) !important;
             font-size: 1.8rem;
         }
-        
+
         .nav-link {
             font-weight: 500;
             margin: 0 10px;
             position: relative;
             transition: all 0.3s ease;
+            color: var(--text-color) !important;
         }
-        
+
         .nav-link:hover {
             color: var(--primary) !important;
         }
-        
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -66,19 +121,20 @@
             background-color: var(--primary);
             transition: width 0.3s ease;
         }
-        
+
         .nav-link:hover::after {
             width: 100%;
         }
-        
+
         .hero {
-            background: white;
-            color: var(--dark);
+            background: var(--bg-glass);
+            color: var(--text-color);
             padding: 100px 0;
             position: relative;
             overflow: hidden;
+            transition: background 0.3s ease;
         }
-        
+
         .hero::before {
             content: '';
             position: absolute;
@@ -86,22 +142,22 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
             transform: rotate(30deg);
         }
-        
+
         .hero-content {
             position: relative;
             z-index: 2;
         }
-        
+
         .hero h1 {
             font-weight: 700;
             font-size: 3.5rem;
             margin-bottom: 20px;
             color: var(--secondary);
         }
-        
+
         .hero p {
             font-size: 1.4rem;
             max-width: 700px;
@@ -109,23 +165,23 @@
             font-weight: 500;
             color: var(--primary);
         }
-        
+
         .hero .welcome-text {
             font-size: 1.6rem;
             font-weight: 600;
             color: var(--secondary);
             margin-bottom: 15px;
         }
-        
+
         .hero .build-text {
             font-size: 1.4rem;
             font-weight: 500;
             color: var(--primary);
             margin-bottom: 30px;
         }
-        
+
         .btn-primary {
-            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
             border: none;
             padding: 15px 35px;
             font-weight: 600;
@@ -135,7 +191,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .btn-primary::before {
             content: '';
             position: absolute;
@@ -146,23 +202,23 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.6s ease;
         }
-        
+
         .btn-primary:hover {
             background: linear-gradient(135deg, #3a0ca3 0%, #38b6ff 100%);
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(67, 97, 238, 0.4);
         }
-        
+
         .btn-primary:hover::before {
             left: 100%;
         }
-        
+
         .section-title {
             position: relative;
             margin-bottom: 60px;
             text-align: center;
         }
-        
+
         .section-title h2 {
             font-weight: 700;
             font-size: 2.5rem;
@@ -173,12 +229,12 @@
         }
 
         .skills .section-title h2 {
-            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .section-title h2::after {
             content: '';
             position: absolute;
@@ -190,34 +246,36 @@
             background: var(--accent);
             border-radius: 2px;
         }
-        
+
         .about {
             padding: 100px 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            background: var(--bg-glass);
             backdrop-filter: blur(10px);
+            transition: background 0.3s ease;
         }
-        
+
         .about-content {
             padding: 30px;
         }
-        
+
         .about h3 {
             font-weight: 600;
             margin-bottom: 20px;
             color: var(--secondary);
         }
-        
+
         .skills {
             padding: 100px 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            background: var(--bg-glass);
             backdrop-filter: blur(10px);
             position: relative;
+            transition: background 0.3s ease;
         }
-        
+
         .skill-item {
             text-align: center;
             padding: 40px 30px;
-            background: linear-gradient(145deg, #ffffff 0%, #fafbff 100%);
+            background: var(--bg-card-gradient);
             border-radius: 20px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -225,7 +283,7 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(67, 97, 238, 0.1);
+            border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
             opacity: 0;
@@ -233,12 +291,29 @@
             animation: fadeInUp 0.6s ease forwards;
         }
 
-        .skill-item:nth-child(1) { animation-delay: 0.1s; }
-        .skill-item:nth-child(2) { animation-delay: 0.2s; }
-        .skill-item:nth-child(3) { animation-delay: 0.3s; }
-        .skill-item:nth-child(4) { animation-delay: 0.4s; }
-        .skill-item:nth-child(5) { animation-delay: 0.5s; }
-        .skill-item:nth-child(6) { animation-delay: 0.6s; }
+        .skill-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .skill-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .skill-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .skill-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .skill-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .skill-item:nth-child(6) {
+            animation-delay: 0.6s;
+        }
 
         .skill-item::before {
             content: '';
@@ -251,7 +326,7 @@
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
-        
+
         .skill-item:hover {
             transform: translateY(-12px) scale(1.02);
             box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
@@ -261,10 +336,10 @@
         .skill-item:hover::before {
             transform: scaleX(1);
         }
-        
+
         .skill-icon {
             font-size: 3.5rem;
-            background: linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -286,29 +361,30 @@
         }
 
         .skill-item p {
-            color: #64748b;
+            color: var(--text-secondary);
             line-height: 1.6;
             font-size: 0.95rem;
             margin: 0;
         }
-        
+
         .projects {
             padding: 100px 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            background: var(--bg-glass);
             backdrop-filter: blur(10px);
+            transition: background 0.3s ease;
         }
-        
+
         .project-card {
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             margin-bottom: 30px;
-            background: linear-gradient(145deg, #ffffff 0%, #fafbff 100%);
+            background: var(--bg-card-gradient);
             height: 100%;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(67, 97, 238, 0.1);
+            border: 1px solid var(--border-color);
             position: relative;
             opacity: 0;
             transform: translateY(30px);
@@ -322,12 +398,29 @@
             }
         }
 
-        .project-card:nth-child(1) { animation-delay: 0.1s; }
-        .project-card:nth-child(2) { animation-delay: 0.2s; }
-        .project-card:nth-child(3) { animation-delay: 0.3s; }
-        .project-card:nth-child(4) { animation-delay: 0.4s; }
-        .project-card:nth-child(5) { animation-delay: 0.5s; }
-        .project-card:nth-child(6) { animation-delay: 0.6s; }
+        .project-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .project-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .project-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .project-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .project-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .project-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
 
         .project-card::before {
             content: '';
@@ -350,12 +443,12 @@
         .project-card:hover::before {
             opacity: 1;
         }
-        
+
         .project-img {
             height: 300px;
             overflow: hidden;
             position: relative;
-            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+            background: var(--bg-img-placeholder);
         }
 
         .project-img::before {
@@ -381,7 +474,7 @@
         .project-card:hover .project-img img {
             transform: scale(1.08);
         }
-        
+
         .project-content {
             padding: 28px;
             display: flex;
@@ -401,14 +494,14 @@
         }
 
         .project-content p {
-            color: #64748b;
+            color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 20px;
             font-size: 0.95rem;
             text-align: justify;
             flex-grow: 1;
         }
-        
+
         .project-tags {
             display: flex;
             flex-wrap: wrap;
@@ -460,15 +553,15 @@
         .project-content .btn:active {
             transform: translateY(0);
         }
-        
+
         .project-tag {
-            background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
+            background: var(--bg-tag);
             color: var(--primary);
             padding: 8px 16px;
             border-radius: 25px;
             font-size: 0.8rem;
             font-weight: 500;
-            border: 1px solid rgba(67, 97, 238, 0.2);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -495,28 +588,29 @@
             border-color: transparent;
             transform: translateY(-2px);
         }
-        
+
         .contact {
             padding: 100px 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+            background: var(--bg-glass);
             backdrop-filter: blur(10px);
-            color: var(--dark);
+            color: var(--text-color);
+            transition: background 0.3s ease;
         }
-        
+
         .contact h2 {
             color: var(--secondary) !important;
         }
-        
+
         .contact-form {
-            background: linear-gradient(145deg, #ffffff 0%, #f0f4ff 100%);
+            background: var(--bg-card-gradient);
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(67, 97, 238, 0.15);
-            border: 2px solid rgba(67, 97, 238, 0.2);
+            border: 2px solid var(--border-color);
             position: relative;
             overflow: hidden;
         }
-        
+
         .contact-form::before {
             content: '';
             position: absolute;
@@ -526,47 +620,47 @@
             height: 4px;
             background: linear-gradient(90deg, #4361ee 0%, #4cc9f0 50%, #7209b7 100%);
         }
-        
+
         .form-control {
-            background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
-            border: 2px solid rgba(67, 97, 238, 0.15);
-            color: var(--dark);
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
             padding: 15px 20px;
             margin-bottom: 20px;
             border-radius: 12px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 500;
         }
-        
+
         .form-control::placeholder {
-            color: #64748b;
+            color: var(--text-secondary);
             font-weight: 400;
         }
-        
+
         .form-control:focus {
-            background: #ffffff;
-            color: var(--dark);
+            background: var(--bg-card);
+            color: var(--text-color);
             border-color: var(--primary);
             box-shadow: 0 0 0 0.3rem rgba(67, 97, 238, 0.15);
             transform: translateY(-2px);
         }
-        
+
         textarea.form-control {
             min-height: 150px;
         }
-        
+
         .footer {
-            background: var(--dark);
+            background: var(--bg-footer);
             color: white;
             padding: 50px 0 20px;
         }
-        
+
         .social-links {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
-        
+
         .social-link {
             width: 50px;
             height: 50px;
@@ -578,34 +672,35 @@
             margin: 0 10px;
             transition: all 0.3s ease;
         }
-        
+
         .social-link:hover {
             background: var(--primary);
             transform: translateY(-5px);
         }
-        
+
         .social-link i {
             font-size: 1.5rem;
         }
-        
+
         .copyright {
             text-align: center;
             padding-top: 30px;
             margin-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .section-title h2 {
                 font-size: 2rem;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -631,6 +726,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">Contact</a>
                     </li>
+                    <li class="nav-item">
+                        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -647,9 +747,11 @@
                     <a href="#projects" class="btn btn-primary">View My Work</a>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="image/1730200699817.png" alt="Profile" class="img-fluid" style="max-width: 350px; border-radius: 0;">
+                    <img src="image/1730200699817.png" alt="Profile" class="img-fluid"
+                        style="max-width: 350px; border-radius: 0;">
                     <div class="quote-container" style="margin-top: 30px;">
-                        <p style="font-style: italic; font-size: 1.4rem; font-weight: 600; color: var(--secondary); margin: 0; line-height: 1.5; text-align: center;">
+                        <p
+                            style="font-style: italic; font-size: 1.4rem; font-weight: 600; color: var(--secondary); margin: 0; line-height: 1.5; text-align: center;">
                             If your dreams don't scare you, they are not big enough
                         </p>
                     </div>
@@ -669,13 +771,18 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <!-- Changed image to one representing embedded systems -->
-                    <img src="image/About Me.png" alt="Embedded Systems" class="img-fluid rounded"  rgba(0,0,0,0.1);">
+                    <img src="image/About Me.png" alt="Embedded Systems" class="img-fluid rounded" rgba(0,0,0,0.1);">
                 </div>
                 <div class="col-lg-6 about-content">
                     <h3>Embedded Systems Engineer</h3>
-                    <p>Hello! I'm Oussama, an Embedded Systems Engineer with expertise in microcontroller programming, circuit design, and real-time systems. I specialize in developing efficient, reliable embedded solutions for various applications.</p>
-                    <p>My skills span across multiple platforms including STM32, ESP32, Arduino, and Raspberry Pi, with proficiency in C, C++, Python, Linux and Assembly languages.</p>
-                    <p>When I'm not working on embedded projects, I enjoy exploring new hardware technologies, contributing to open-source embedded projects, and learning about the latest developments in IoT and robotics.</p>
+                    <p>Hello! I'm Oussama, an Embedded Systems Engineer with expertise in microcontroller programming,
+                        circuit design, and real-time systems. I specialize in developing efficient, reliable embedded
+                        solutions for various applications.</p>
+                    <p>My skills span across multiple platforms including STM32, ESP32, Arduino, and Raspberry Pi, with
+                        proficiency in C, C++, Python, Linux and Assembly languages.</p>
+                    <p>When I'm not working on embedded projects, I enjoy exploring new hardware technologies,
+                        contributing to open-source embedded projects, and learning about the latest developments in IoT
+                        and robotics.</p>
                 </div>
             </div>
         </div>
@@ -723,7 +830,8 @@
                             <i class="fab fa-studiovinari"></i>
                         </div>
                         <h4>STM32</h4>
-                        <p>Skilled in STM32 microcontrollers and HAL libraries, enabling robust firmware development, seamless peripheral integration, and optimized hardware-software interaction.</p>
+                        <p>Skilled in STM32 microcontrollers and HAL libraries, enabling robust firmware development,
+                            seamless peripheral integration, and optimized hardware-software interaction.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -732,7 +840,8 @@
                             <i class="fas fa-wifi"></i>
                         </div>
                         <h4>IoT</h4>
-                        <p>Building IoT applications with integrated wireless technologies to connect sensors, microcontrollers, and cloud platforms for intelligent automation.</p>
+                        <p>Building IoT applications with integrated wireless technologies to connect sensors,
+                            microcontrollers, and cloud platforms for intelligent automation.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -777,20 +886,24 @@
                         <form action="https://formspree.io/f/mwpngpog" method="POST">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                                    <input type="text" name="name" class="form-control" placeholder="Your Name"
+                                        required>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                                    <input type="email" name="email" class="form-control" placeholder="Your Email"
+                                        required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+                                    <input type="text" name="subject" class="form-control" placeholder="Subject"
+                                        required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <textarea name="message" class="form-control" placeholder="Your Message" required></textarea>
+                                    <textarea name="message" class="form-control" placeholder="Your Message"
+                                        required></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -814,7 +927,8 @@
                     <p>Embedded Systems Engineer</p>
                     <div class="social-links">
                         <a href="https://github.com/Oussama-Jhimi" class="social-link"><i class="fab fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/oussama-jhimi" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.linkedin.com/in/oussama-jhimi" class="social-link"><i
+                                class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
@@ -829,7 +943,45 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        (function() {
+        // Dark Mode Functionality
+        (function () {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const icon = toggleBtn.querySelector('i');
+            const body = document.body;
+
+            // Function to set theme
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    body.classList.add('dark-mode');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    body.classList.remove('dark-mode');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                localStorage.setItem('theme', theme);
+            }
+
+            // Check saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme('dark');
+            }
+
+            // Click event
+            toggleBtn.addEventListener('click', () => {
+                if (body.classList.contains('dark-mode')) {
+                    setTheme('light');
+                } else {
+                    setTheme('dark');
+                }
+            });
+        })();
+
+        (function () {
             const username = 'Oussama-Jhimi';
             const grid = document.getElementById('projects-grid');
 
@@ -839,20 +991,20 @@
                 if (manualOverrides[repoName]) {
                     return manualOverrides[repoName];
                 }
-                
+
                 // Try partial matches for common variations
                 const partialMatches = {
                     'IoT-CO2-Monitoring-Relay-Control-System': ['IoT-CO2', 'CO2-Monitoring', 'Relay-Control'],
                     'nRF24L01-Wireless-Controller': ['nRF24L01', 'Wireless-Controller', 'nRF24']
                 };
-                
+
                 for (const [key, variations] of Object.entries(partialMatches)) {
                     if (variations.some(variation => repoName.includes(variation))) {
                         console.log(`Found partial match for ${repoName} -> ${key}`);
                         return manualOverrides[key];
                     }
                 }
-                
+
                 return null;
             }
 
@@ -862,29 +1014,29 @@
                     name: 'Embedded System Development for IoT Control',
                     image: 'image/IoT.png',
                     description: 'Custom PCB design featuring an ESP32 microcontroller, MH-Z19 CO₂ sensor, and six relay modules, engineered using Altium Designer for reliable environmental monitoring and control systems.\n\nCross-platform application developed in Python/PyQt5, offering real-time CO₂ graphing and remote relay control via the MQTT protocol.',
-                    skills: ['ESP32', 'Altium Designer', 'CO₂ Sensor', 'Relay Control', 'IoT','PyQt5','MQTT']
+                    skills: ['ESP32', 'Altium Designer', 'CO₂ Sensor', 'Relay Control', 'IoT', 'PyQt5', 'MQTT']
                 },
                 'MHZ19Universal': {
                     name: 'MH-Z19 Universal Library',
                     image: 'https://www.shutterstock.com/image-illustration/c-code-on-dark-background-600nw-1896170293.jpg',
                     description: 'Embedded C++ library for MH-Z19 CO₂ sensors (B/C/D series).Provides reliable CO₂ concentration and temperature measurements with automatic sensor variant detection. Features include calibration routines (zero/span), automatic baseline correction (ABC) management, configurable measurement range, and optional data filtering for improved stability. Designed for easy integration into embedded projects, offering a lightweight and modular API for precise indoor air quality monitoring.',
-                    skills: ['C++','c', 'Arduino', 'CO₂ Sensor', 'Library Development', 'Calibration']
+                    skills: ['C++', 'c', 'Arduino', 'CO₂ Sensor', 'Library Development', 'Calibration']
                 },
                 'nRF24L01-Wireless-Controller': {
                     name: 'NRF24L01 Wireless Controller',
                     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtLhRhjnhU4wQELPAw0cDl9cZLpE0Dvr7iTQ&s',
                     description: 'A compact, low-power embedded system designed in Altium Designer.It interfaces with a PS/2 game controller to capture real-time input signals and transmits the data wirelessly over the 2.4 GHz ISM band using the nRF24L01+ transceiver module. The design emphasizes battery efficiency, reliable wireless communication, and clean PCB layout for seamless integration into portable gaming or remote-control applications.',
-                    skills: ['nRF24L01', 'Altium Designer', 'c++','Wireless Communication', 'PCB Design']
+                    skills: ['nRF24L01', 'Altium Designer', 'c++', 'Wireless Communication', 'PCB Design']
                 },
                 'checksum-with-MD5': {
                     name: 'MD5 Checksum Utility',
                     image: 'https://www.profesionalreview.com/wp-content/uploads/2021/09/MD5-checksum-00.jpg',
                     description: 'Utility for calculating and verifying MD5 checksums of different memory regions within NAND flash memory. Designed for embedded systems validation.',
-                    skills: ['C','c++', 'MD5', 'NAND Flash', 'Memory Validation', 'Embedded Systems']
+                    skills: ['C', 'c++', 'MD5', 'NAND Flash', 'Memory Validation', 'Embedded Systems']
                 },
                 'line-following-robot-code': {
                     name: 'Line Following Robot',
-                    image: 'image/Line Following Robot.png',    
+                    image: 'image/Line Following Robot.png',
                     description: 'Line-following robot using sensor-based navigation. Arduino code for detecting and following black lines on white surfaces with obstacle-avoidance capabilities.',
                     skills: ['Arduino', 'Robotics', 'Sensor Navigation', 'C++', 'Motor Control']
                 },
@@ -938,7 +1090,7 @@
                 const img = document.createElement('img');
                 // Use manual override image if available, otherwise fallback to language-based image
                 const override = findRepositoryOverride(repo.name);
-                
+
                 // Debug: log repository name and override status
                 console.log('Repository:', repo.name, 'Has override:', !!override);
                 img.src = override?.image || 'https://source.unsplash.com/featured/800x600?technology,' + encodeURIComponent(repo.language || 'electronics');
@@ -959,7 +1111,7 @@
 
                 const tags = document.createElement('div');
                 tags.className = 'project-tags';
-                
+
                 // Use custom skills if available, otherwise use repo language
                 const skillsToShow = override?.skills || (repo.language ? [repo.language] : []);
                 skillsToShow.forEach(skill => {
@@ -1021,4 +1173,5 @@
         })();
     </script>
 </body>
+
 </html>
