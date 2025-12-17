@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTA (Over-The-Air) on ESP32 - Oussama Jhimi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Highlight.js for IDE-like code styling -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4ade80;
+
+            /* Theme Variables */
+            --bg-body: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6c757d 100%);
+            --bg-navbar: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --bg-card: #ffffff;
+            --bg-section: #f8f9ff;
+            --text-color: #212529;
+            --text-secondary: #64748b;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --border-color: rgba(67, 97, 238, 0.1);
+            --bg-footer: #212529;
+            --table-header-bg: #4361ee;
+            --table-row-even: #f8f9ff;
+        }
+
+        body.dark-mode {
+            --primary: #4cc9f0;
+            --secondary: #a5b4fc;
+
+            --bg-body: linear-gradient(135deg, #0f172a 0%, #312e81 100%);
+            --bg-navbar: #111827;
+            --bg-glass: rgba(17, 24, 39, 0.95);
+            --bg-card: #1f2937;
+            --bg-section: #1a1f2e;
+            --text-color: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --bg-footer: #0b1120;
+            --table-header-bg: #1e3a8a;
+            --table-row-even: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-color);
+            line-height: 1.8;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: var(--bg-navbar) !important;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary) !important;
+            font-size: 1.8rem;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+            transition: all 0.3s ease;
+            color: var(--text-color) !important;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            padding: 8px 0;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+            transform: rotate(15deg);
+        }
+
+        .article-header {
+            padding: 120px 0 60px;
+            text-align: center;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+        }
+
+        .article-header h1 {
+            font-weight: 800;
+            font-size: 2.8rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-header .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+        }
+
+        .meta-item i {
+            color: var(--primary);
+        }
+
+        .article-content {
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            padding: 60px 0 100px;
+        }
+
+        .content-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+        }
+
+        .subsection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .content-section p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .content-section ul,
+        .content-section ol {
+            margin-bottom: 20px;
+            padding-left: 30px;
+        }
+
+        .content-section li {
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            background: var(--bg-section);
+            border-left: 4px solid var(--primary);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .comparison-table thead {
+            background: var(--table-header-bg);
+            color: white;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: var(--table-row-even);
+        }
+
+        .comparison-table tbody tr:hover {
+            background: var(--bg-section);
+        }
+
+        /* Partition Architecture Visualization */
+        .partition-map {
+            display: flex;
+            gap: 5px;
+            margin: 30px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .partition {
+            background: var(--bg-section);
+            border: 2px solid var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            flex: 1;
+            min-width: 100px;
+            position: relative;
+        }
+
+        .partition.active::after {
+            content: '(running)';
+            display: block;
+            font-size: 0.7rem;
+            color: var(--success);
+        }
+
+        /* IDE-like Code Blocks */
+        .code-container {
+            margin: 25px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .code-header {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 10px 20px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #3e4451;
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red {
+            background: #ff5f56;
+        }
+
+        .dot-yellow {
+            background: #ffbd2e;
+        }
+
+        .dot-green {
+            background: #27c93f;
+        }
+
+        pre {
+            margin: 0;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Checkmark list */
+        .check-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .check-list li {
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .check-list li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--success);
+        }
+
+        .footer {
+            background: var(--bg-footer);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+            color: white;
+        }
+
+        .social-link i {
+            font-size: 1.5rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-to-articles {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .back-to-articles:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Portfolio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="articles.html">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Article Header -->
+    <header class="article-header">
+        <div class="container">
+            <h1>OTA (Over-The-Air) on ESP32</h1>
+            <p class="subtitle">Remote Software Update: Principles, Use Cases and Implementation</p>
+            <div class="article-meta">
+                <div class="meta-item">
+                    <i class="far fa-user"></i>
+                    <span>Oussama Jhimi</span>
+                </div>
+                <div class="meta-item">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>December 14, 2025</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-microchip"></i>
+                    <span>IoT</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Article Content -->
+    <section class="article-content">
+        <div class="container">
+
+            <!-- Abstract -->
+            <div class="content-section">
+                <p class="lead">
+                    OTA (Over-The-Air) update allows deploying new firmware to a microcontroller without physical
+                    connection, via WiFi, Bluetooth or a remote server. On ESP32, OTA is natively supported by ESP-IDF
+                    and ArduinoESP32, making it an essential tool for modern IoT projects. This article presents
+                    motivations, OTA types, partition architecture, implementation examples, application domains and
+                    professional best practices.
+                </p>
+            </div>
+
+            <!-- 1. Why use OTA -->
+            <div class="content-section">
+                <h2 class="section-title">1. Why use OTA</h2>
+
+                <h3 class="subsection-title">1.1 Main Advantages</h3>
+                <div class="row g-4 mt-2">
+                    <div class="col-md-6">
+                        <div class="highlight-box h-100 mt-0">
+                            <ul class="check-list mb-0">
+                                <li><strong>Remote maintenance:</strong> no need for physical access.</li>
+                                <li><strong>Mass deployment:</strong> update hundreds of devices simultaneously.</li>
+                                <li><strong>Security:</strong> quick fixes in case of vulnerabilities.</li>
+                                <li><strong>Cost and time saving:</strong> no disassembly, no cables.</li>
+                                <li><strong>Improved user experience:</strong> device remains operational.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">1.2 OTA Security</h3>
+                <p>Security is paramount when implementing remote updates to prevent unauthorized modifications:</p>
+                <ul>
+                    <li><i class="fas fa-file-signature text-primary me-2"></i> <strong>Firmware signature:</strong>
+                        Verifying the authenticity of the author.</li>
+                    <li><i class="fas fa-shield-alt text-primary me-2"></i> <strong>Integrity verification
+                            (SHA256):</strong> Ensuring the file hasn't been corrupted.</li>
+                    <li><i class="fas fa-lock text-primary me-2"></i> <strong>HTTPS connection:</strong> Encrypting the
+                        transmission channel.</li>
+                    <li><i class="fas fa-key text-primary me-2"></i> <strong>Authentication:</strong> Using tokens or
+                        API keys to authorize updates.</li>
+                </ul>
+            </div>
+
+            <!-- 2. OTA Architecture -->
+            <div class="content-section">
+                <h2 class="section-title">2. OTA Architecture on ESP32</h2>
+                <p>ESP32 uses dedicated partitions in its flash memory to manage the update process safely. A typical
+                    partition table includes:</p>
+
+                <div class="partition-map">
+                    <div class="partition" style="border-style: dotted; border-color: #666;">Bootloader</div>
+                    <div class="partition" style="border-style: dotted; border-color: #666;">Partition Table</div>
+                    <div class="partition active">ota_0 (App)</div>
+                    <div class="partition">ota_1 (Update)</div>
+                    <div class="partition" style="border-style: dashed; border-color: #4cc9f0;">SPIFFS / LittleFS</div>
+                </div>
+
+                <h4 class="mt-4"><i class="fas fa-sync-alt text-primary"></i> The Update Principle:</h4>
+                <ol>
+                    <li>Current firmware runs on <strong>ota_0</strong>.</li>
+                    <li>New firmware is downloaded into <strong>ota_1</strong> (the inactive partition).</li>
+                    <li>The Bootloader validates the new firmware.</li>
+                    <li>System restarts and switches to the new partition.</li>
+                    <li><strong>Automatic rollback:</strong> If the new firmware fails to boot, the system reverts to
+                        the previous working partition.</li>
+                </ol>
+            </div>
+
+            <!-- 3. Types of OTA -->
+            <div class="content-section">
+                <h2 class="section-title">3. Types of OTA on ESP32</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>OTA Type</th>
+                            <th>Description</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Local OTA</strong> (Web Server)</td>
+                            <td>ESP32 hosts a web page to upload firmware manually.</td>
+                            <td>Prototyping, local maintenance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OTA via WiFi + HTTP(S)</strong></td>
+                            <td>ESP32 downloads firmware from a remote server (URL).</td>
+                            <td>Large-scale deployment</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OTA via MQTT</strong></td>
+                            <td>Firmware download triggered by an MQTT specific message.</td>
+                            <td>Industrial IoT networks</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OTA via Bluetooth</strong></td>
+                            <td>Update performed via a smartphone app.</td>
+                            <td>Mobile devices, wearables</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 4. Implementation Examples -->
+            <div class="content-section">
+                <h2 class="section-title">4. Implementation Examples (ESP32)</h2>
+
+                <!-- Example 4.1 -->
+                <h3 class="subsection-title">4.1 OTA via WiFi with ESP32</h3>
+                <p>This method is ideal for local updates within the same network.</p>
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="window-dots">
+                            <div class="window-dot dot-red"></div>
+                            <div class="window-dot dot-yellow"></div>
+                            <div class="window-dot dot-green"></div>
+                        </div>
+                        <span>ESP32_ota_wifi.cpp</span>
+                    </div>
+                    <pre><code class="language-cpp">#include &lt;WiFi.h&gt;
+#include &lt;ArduinoOTA.h&gt;
+
+const char *ssid = "Your_SSID";
+const char *password = "Your_PWD";
+
+void setup() {
+    Serial.begin(115200);
+
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    Serial.println("\nConnected to WiFi");
+
+    ArduinoOTA.setHostname("ESP32-OTA");
+    ArduinoOTA.setPassword("OTApassword");
+
+    ArduinoOTA.onStart([]() {
+        Serial.println("OTA Start");
+    });
+    ArduinoOTA.onEnd([]() {
+        Serial.println("\nOTA End");
+    });
+    ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+        Serial.printf("Progress: %u %%\r", (progress * 100) / total);
+    });
+    ArduinoOTA.onError([](ota_error_t error) {
+        Serial.printf("OTA Error: %u\n", error);
+    });
+
+    ArduinoOTA.begin();
+}
+
+void loop() {
+    ArduinoOTA.handle();
+}</code></pre>
+                </div>
+
+                <!-- Example 4.2 -->
+                <h3 class="subsection-title">4.2 OTA via HTTP Server (Update from URL)</h3>
+                <p>The device fetches the update from a centralized server.</p>
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="window-dots">
+                            <div class="window-dot dot-red"></div>
+                            <div class="window-dot dot-yellow"></div>
+                            <div class="window-dot dot-green"></div>
+                        </div>
+                        <span>ota_http_client.cpp</span>
+                    </div>
+                    <pre><code class="language-cpp">#include &lt;WiFi.h&gt;
+#include &lt;HTTPClient.h&gt;
+#include &lt;Update.h&gt;
+
+const char *ssid = "Your_SSID";
+const char *password = "Your_PWD";
+const char *firmware_url = "http://your-server.com/firmware.bin";
+
+void setup() {
+    Serial.begin(115200);
+
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    Serial.println("\nWiFi OK");
+
+    HTTPClient http;
+    http.begin(firmware_url);
+    int httpCode = http.GET();
+
+    if (httpCode == HTTP_CODE_OK) {
+        int contentLength = http.getSize();
+        WiFiClient *stream = http.getStreamPtr();
+
+        if (Update.begin(contentLength)) {
+            size_t written = Update.writeStream(*stream);
+            if (written == contentLength) {
+                Serial.println("Firmware downloaded");
+            }
+            if (Update.end()) {
+                if (Update.isFinished()) {
+                    Serial.println("Update OK, reboot...");
+                    ESP.restart();
+                }
+            }
+        }
+    }
+    http.end();
+}
+
+void loop() {}</code></pre>
+                </div>
+
+                <!-- Example 4.3 -->
+                <h3 class="subsection-title">4.3 OTA via Integrated Web Server (Manual Upload)</h3>
+                <p>Hosts a simple form to upload the .bin file from a browser.</p>
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="window-dots">
+                            <div class="window-dot dot-red"></div>
+                            <div class="window-dot dot-yellow"></div>
+                            <div class="window-dot dot-green"></div>
+                        </div>
+                        <span>ota_web_server.cpp</span>
+                    </div>
+                    <pre><code class="language-cpp">#include &lt;WiFi.h&gt;
+#include &lt;WebServer.h&gt;
+#include &lt;Update.h&gt;
+
+WebServer server(80);
+
+void handleRoot() {
+    server.sendHeader("Connection", "close");
+    server.send(200, "text/html",
+        "<form method='POST' action='/update' enctype='multipart/form-data'>"
+        "<input type='file' name='update'>"
+        "<input type='submit' value='Update'>"
+        "</form>");
+}
+
+void handleUpdate() {
+    HTTPUpload &upload = server.upload();
+
+    if (upload.status == UPLOAD_FILE_START) {
+        Update.begin();
+    } else if (upload.status == UPLOAD_FILE_WRITE) {
+        Update.write(upload.buf, upload.currentSize);
+    } else if (upload.status == UPLOAD_FILE_END) {
+        Update.end(true);
+    }
+}
+
+void setup() {
+    WiFi.begin("SSID", "PWD");
+    while (WiFi.status() != WL_CONNECTED) delay(500);
+
+    server.on("/", HTTP_GET, handleRoot);
+    server.on("/update", HTTP_POST, []() {
+        server.send(200, "text/plain", Update.hasError() ? "Error" : "OK");
+    }, handleUpdate);
+
+    server.begin();
+}
+
+void loop() {
+    server.handleClient();
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- 5. Application Domains -->
+            <div class="content-section">
+                <h2 class="section-title">5. Application Domains</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-logo mb-3"><i class="fas fa-industry fa-2x text-primary"></i></div>
+                        <h4 class="h5">Industry & IoT</h4>
+                        <div class="stat-label small">Sensors, Connected PLCs, SCADA</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-logo mb-3"><i class="fas fa-home fa-2x text-primary"></i></div>
+                        <h4 class="h5">Home Automation</h4>
+                        <div class="stat-label small">Smart lights, Thermostats, Alarms</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-logo mb-3"><i class="fas fa-car fa-2x text-primary"></i></div>
+                        <h4 class="h5">Automotive</h4>
+                        <div class="stat-label small">Telematics, Embedded Dashboards</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-logo mb-3"><i class="fas fa-flask fa-2x text-primary"></i></div>
+                        <h4 class="h5">R&D</h4>
+                        <div class="stat-label small">Rapid updating, Test benches</div>
+                    </div>
+                </div>
+                <div class="highlight-box mt-4">
+                    <strong><i class="fas fa-satellite-dish me-2"></i> Remote Connected Devices:</strong>
+                    Perfect for Weather stations, Drones, and Autonomous robots that are hard to access physically.
+                </div>
+            </div>
+
+            <!-- 6. Best Practices -->
+            <div class="content-section">
+                <h2 class="section-title">6. Best Practices for OTA</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4 class="h5 text-secondary"><i class="fas fa-shield-alt"></i> Security</h4>
+                        <ul>
+                            <li>Always use HTTPS.</li>
+                            <li>Verify firmware signature and SHA256.</li>
+                            <li>Employ strong OTA passwords.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="h5 text-secondary"><i class="fas fa-layer-group"></i> Architecture</h4>
+                        <ul>
+                            <li>Plan for two OTA partitions.</li>
+                            <li>Enable automatic rollback.</li>
+                            <li>Store the current version in NVS.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="h5 text-secondary"><i class="fas fa-chart-line"></i> Monitoring</h4>
+                        <ul>
+                            <li>Log all updates.</li>
+                            <li>Notify in case of failure.</li>
+                            <li>Maintain a versioned firmware server.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion -->
+            <div class="content-section">
+                <h2 class="section-title">7. Conclusion</h2>
+                <p>
+                    OTA is an indispensable feature for any serious ESP32 project. It enables maintenance, bug fixing,
+                    and feature enhancement without physical intervention, while ensuring security, flexibility, and
+                    scalability.
+                </p>
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3>Oussama Jhimi</h3>
+                    <p>Embedded Systems Engineer</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Oussama-Jhimi" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/oussama-jhimi" class="social-link"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center copyright">
+                    <p>&copy; 2025 Oussama Jhimi. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Highlight.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Highlight.js
+        document.addEventListener('DOMContentLoaded', (event) => {
+            hljs.highlightAll();
+        });
+
+        // Dark Mode Functionality
+        (function () {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const icon = toggleBtn.querySelector('i');
+            const body = document.body;
+
+            // Function to set theme
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    body.classList.add('dark-mode');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    body.classList.remove('dark-mode');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                localStorage.setItem('theme', theme);
+            }
+
+            // Check saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme('dark');
+            }
+
+            // Click event
+            toggleBtn.addEventListener('click', () => {
+                if (body.classList.contains('dark-mode')) {
+                    setTheme('light');
+                } else {
+                    setTheme('dark');
+                }
+            });
+        })();
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
