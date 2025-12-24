@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Product with MushloveLab - Oussama Jhimi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Highlight.js for IDE-like code styling -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4ade80;
+
+            /* Theme Variables */
+            --bg-body: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6c757d 100%);
+            --bg-navbar: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --bg-card: #ffffff;
+            --bg-section: #f8f9ff;
+            --text-color: #212529;
+            --text-secondary: #64748b;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --border-color: rgba(67, 97, 238, 0.1);
+            --bg-footer: #212529;
+            --table-header-bg: #4361ee;
+            --table-row-even: #f8f9ff;
+        }
+
+        body.dark-mode {
+            --primary: #4cc9f0;
+            --secondary: #a5b4fc;
+
+            --bg-body: linear-gradient(135deg, #0f172a 0%, #312e81 100%);
+            --bg-navbar: #111827;
+            --bg-glass: rgba(17, 24, 39, 0.95);
+            --bg-card: #1f2937;
+            --bg-section: #1a1f2e;
+            --text-color: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --bg-footer: #0b1120;
+            --table-header-bg: #1e3a8a;
+            --table-row-even: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-color);
+            line-height: 1.8;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: var(--bg-navbar) !important;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary) !important;
+            font-size: 1.8rem;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+            transition: all 0.3s ease;
+            color: var(--text-color) !important;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            padding: 8px 0;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+            transform: rotate(15deg);
+        }
+
+        .article-header {
+            padding: 120px 0 60px;
+            text-align: center;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+        }
+
+        .article-header h1 {
+            font-weight: 800;
+            font-size: 2.8rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .article-header .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+        }
+
+        .meta-item i {
+            color: var(--primary);
+        }
+
+        .article-content {
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            padding: 60px 0 100px;
+        }
+
+        .content-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+        }
+
+        .subsection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .content-section p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .content-section ul,
+        .content-section ol {
+            margin-bottom: 20px;
+            padding-left: 30px;
+        }
+
+        .content-section li {
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            background: var(--bg-section);
+            border-left: 4px solid var(--primary);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        /* Checkmark list */
+        .check-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .check-list li {
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .check-list li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--success);
+        }
+
+        .footer {
+            background: var(--bg-footer);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+            color: white;
+        }
+
+        .social-link i {
+            font-size: 1.5rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-to-articles {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .back-to-articles:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        /* Gallery Styles */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            aspect-ratio: 4/3;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 40px rgba(67, 97, 238, 0.25);
+        }
+
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img,
+        .gallery-item:hover video {
+            transform: scale(1.08);
+        }
+
+        .gallery-item .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .gallery-item .overlay i {
+            color: white;
+            font-size: 2rem;
+            margin: auto;
+            margin-bottom: auto;
+        }
+
+        .gallery-item.video-item::after {
+            content: '\f04b';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 3rem;
+            opacity: 0.9;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Portfolio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="articles.html">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Article Header -->
+    <header class="article-header">
+        <div class="container">
+            <h1>New Product with MushloveLab</h1>
+            <p class="subtitle">PCB design and development with Altium Designer, integrating sensors and IoT modules</p>
+            <div class="article-meta">
+                <div class="meta-item">
+                    <i class="far fa-user"></i>
+                    <span>Oussama Jhimi</span>
+                </div>
+                <div class="meta-item">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>Sept. 2025 - Oct. 2025</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-microchip"></i>
+                    <span>PCB Design & IoT</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Article Content -->
+    <section class="article-content">
+        <div class="container">
+
+            <!-- Abstract -->
+            <div class="content-section">
+                <p class="lead">
+                    Innovative device enabling real-time measurement of CO₂, temperature, and humidity, featuring
+                    instant display and remote monitoring & control via an IoT app.
+                </p>
+            </div>
+
+            <!-- 1. Advanced PCB Design & Hardware Optimization -->
+            <div class="content-section">
+                <h2 class="section-title">Advanced PCB Design & Hardware Optimization</h2>
+                <div class="highlight-box">
+                    <ul class="check-list mb-0">
+                        <li><strong><i class="fas fa-ruler-combined me-2"></i>2 layer PCB design:</strong> Signal,
+                            power, and ground planes for improved EMI/EMC performance.</li>
+                        <li><strong><i class="fas fa-plug me-2"></i>Optimized component placement:</strong> Routing for
+                            sensor accuracy and low-noise analog measurements.</li>
+                        <li><strong><i class="fas fa-bolt me-2"></i>Power management design:</strong> (LDO / DC-DC)
+                            ensuring stable operation and low power consumption.</li>
+                        <li><strong><i class="fas fa-fire me-2"></i>Thermal-aware layout:</strong> To enhance
+                            reliability and extend component lifetime.</li>
+                        <li><strong><i class="fas fa-flask me-2"></i>Design for Manufacturing (DFM) & DFA:</strong> To
+                            ensure production-ready hardware.</li>
+                        <li><strong><i class="fas fa-shield-alt me-2"></i>Protection circuits:</strong> (ESD, reverse
+                            polarity, overcurrent) for industrial-grade robustness.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. OTA (Over-The-Air) updates -->
+            <div class="content-section">
+                <h2 class="section-title">OTA (Over-The-Air) updates</h2>
+                <h3 class="subsection-title"><i class="fas fa-cloud-upload-alt me-2"></i>Updates via HTTP server</h3>
+                <ul class="check-list">
+                    <li><strong>Rapid deployment:</strong> Of new features and bug fixes without physical intervention.
+                    </li>
+                    <li><strong>Secure and continuous maintenance:</strong> Minimizing risks of manual updates.</li>
+                    <li><strong>Enhanced product durability:</strong> And scalability.</li>
+                    <li><strong>Cost reduction:</strong> Maintenance cost reduction of up to 30–40% compared to
+                        traditional update methods.</li>
+                </ul>
+            </div>
+
+            <!-- 3. Key Applications -->
+            <div class="content-section">
+                <h2 class="section-title">Key Applications</h2>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm" style="background: var(--bg-section);">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary"><i class="fas fa-leaf me-2"></i>Mushroom Cultivation
+                                </h5>
+                                <p class="card-text">Optimize yield by maintaining ideal CO₂ and humidity levels.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm" style="background: var(--bg-section);">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary"><i class="fas fa-tractor me-2"></i>Agriculture</h5>
+                                <p class="card-text">Monitor temperature and adjust conditions for optimal growth.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm" style="background: var(--bg-section);">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary"><i class="fas fa-battery-half me-2"></i>Energy
+                                    Efficiency</h5>
+                                <p class="card-text">Reduce costs by automatically adjusting ventilation and heating.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm" style="background: var(--bg-section);">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary"><i class="fas fa-bullseye me-2"></i>Precision</h5>
+                                <p class="card-text">Accurate data for smarter and more sustainable crop management.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Project Gallery -->
+            <div class="content-section">
+                <h2 class="section-title"><i class="fas fa-images me-2"></i>Project Gallery</h2>
+                <p>Explore the PCB design process and final product through images and video.</p>
+                <div class="gallery-grid">
+
+                    <div class="gallery-item" onclick="openLightbox('image/mushlovelab_pcb 2.png')">
+                        <img src="image/mushlovelab_pcb 2.png" alt="PCB Design 2">
+                        <div class="overlay"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox('image/mushlovelab_pcb 3.png')">
+                        <img src="image/mushlovelab_pcb 3.png" alt="PCB Design 3">
+                        <div class="overlay"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox('image/mushlovelab_pcb 4.png')">
+                        <img src="image/mushlovelab_pcb 4.png" alt="PCB Design 4">
+                        <div class="overlay"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox('image/mushlovelab_pcb 5.png')">
+                        <img src="image/mushlovelab_pcb 5.png" alt="PCB Design 5">
+                        <div class="overlay"><i class="fas fa-search-plus"></i></div>
+                    </div>
+                    <div class="gallery-item video-item" onclick="openVideoLightbox('image/mush-video.mp4')">
+                        <video muted>
+                            <source src="image/mush-video.mp4" type="video/mp4">
+                        </video>
+                        <div class="overlay"><i class="fas fa-play"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="index.html#projects" class="back-to-articles">
+                    <i class="fas fa-arrow-left"></i> Back to Projects
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3>Oussama Jhimi</h3>
+                    <p>Embedded Systems Engineer</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Oussama-Jhimi" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/oussama-jhimi" class="social-link"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center copyright">
+                    <p>&copy; 2025 Oussama Jhimi. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Highlight.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Highlight.js
+        document.addEventListener('DOMContentLoaded', (event) => {
+            hljs.highlightAll();
+        });
+
+        // Dark Mode Functionality
+        (function () {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const icon = toggleBtn.querySelector('i');
+            const body = document.body;
+
+            // Function to set theme
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    body.classList.add('dark-mode');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    body.classList.remove('dark-mode');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                localStorage.setItem('theme', theme);
+            }
+
+            // Check saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme('dark');
+            }
+
+            // Click event
+            toggleBtn.addEventListener('click', () => {
+                if (body.classList.contains('dark-mode')) {
+                    setTheme('light');
+                } else {
+                    setTheme('dark');
+                }
+            });
+        })();
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Lightbox Functions
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openVideoLightbox(src) {
+            const lightbox = document.getElementById('video-lightbox');
+            const video = document.getElementById('lightbox-video');
+            video.querySelector('source').src = src;
+            video.load();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoLightbox() {
+            const lightbox = document.getElementById('video-lightbox');
+            const video = document.getElementById('lightbox-video');
+            video.pause();
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+                closeVideoLightbox();
+            }
+        });
+    </script>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Lightbox Image" class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <!-- Video Lightbox Modal -->
+    <div class="lightbox" id="video-lightbox" onclick="closeVideoLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <video controls autoplay class="lightbox-content" id="lightbox-video">
+            <source src="" type="video/mp4">
+        </video>
+    </div>
+</body>
+
+</html>
